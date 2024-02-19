@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /**
  * The core plugin class.
  *
@@ -59,7 +61,11 @@ class Convenzioni {
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->load_post_types();
+		$this->load_shortcodes();
+		$this->load_templates();
 
+		$this->loader->add_action('elementor/loaded', $this, 'load_elementorwidgets');
+		//$this->load_elementorwidgets();
 	}
 
 	/**
@@ -73,9 +79,14 @@ class Convenzioni {
 		// Main dependencies
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-convenzioni-loader.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-convenzioni-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-convenzioni-elementor.php';
+		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-convenzioni-templates.php';
 
 		// Custom post types dependencies
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/post-types/convenzioni.php';
+					
+		// Shortcodes dependencies
+		//require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/shortcodes/convenzioni-list.php';
 
 		$this->loader = new Convenzioni_Loader();
 
@@ -96,7 +107,7 @@ class Convenzioni {
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
+	 * Define the Post Types for this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -106,6 +117,44 @@ class Convenzioni {
 		$plugin_PT_convenzioni = new Convenzioni_PT_Convenzioni();
 
 		$this->loader->add_action( 'init', $plugin_PT_convenzioni, 'load_pt' );
+
+	}
+
+	/**
+	 * Load the shortcodes for this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function load_shortcodes() {
+
+		//$plugin_shortcode_convenzioni = new Convenzioni_Shortcode_Convenzioni();
+
+		//$this->loader->add_action( 'init', $plugin_shortcode_convenzioni, 'shortcode' );
+		
+	}
+
+	/**
+	 * Load the elementor widgets for this plugin
+	 * 
+	 * @since    1.0.0
+	 */
+	public function load_elementorwidgets() {
+
+		$plugin_elementor_loader = new Convenzioni_Elementor();
+
+	}
+
+	/**
+	 * Load the templates for this plugin, templates will be overrided from the theme
+	 * 
+	 * @since    1.0.0
+	 */
+	public function load_templates() {
+
+		$plugin_templates_loader = new Convenzioni_Templates();
+
+		$this->loader->add_action('template_include', $plugin_templates_loader, 'load_plugin_templates');
 
 	}
 

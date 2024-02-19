@@ -20,10 +20,8 @@
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 
 define( 'CONVENZIONI_VERSION', '1.0.0' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-convenzioni.php';
